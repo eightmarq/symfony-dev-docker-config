@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+    nginx:
+        ports:
+            - 8082:80
+
+volumes:
+    built-vendor:
+        driver: local
+        driver_opts:
+            type: none
+            # You have to specify your current vendor absolute path
+            device: '<path-to-your-local-vendor>'
+            o: bind

@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+    web:
+        build: .
+        ports:
+            - 9000:9000
+        volumes:
+            - built-vendor:/var/www/vendor
+            - .:/var/www
+        networks:
+            - default
+
+    nginx:
+        build:
+            context: ./docker/nginx/
+        restart: on-failure
+        volumes:
+            - .:/var/www
+        depends_on:
+            - web
+        ports:
+            - 80:80
+        networks:
+            default:
+                aliases:
+                    - web.local
+
+    database:
+        image: postgres
+        ports:
+            - 5432:5432
+        env_file:
+            - ./docker/database/database.env # configure postgres
+        volumes:
+            - database-data:/var/lib/postgresql/data/ # to store data in named volumes
+        networks:
+            - default
+
+volumes:
+    database-data:
+    built-vendor:
+        driver: local
+        driver_opts:
+            type: none
+            device: /var/www/vendor
+            o: bind
+
+networks:
+    default:
+        driver: bridge
