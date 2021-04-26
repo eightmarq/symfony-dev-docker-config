@@ -1,5 +1,5 @@
 # Composer image
-FROM composer:latest AS composer
+FROM composer:1.9.3 AS composer
 
 RUN rm -rf /var/www && mkdir /var/www
 
@@ -38,8 +38,6 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-install -j$(nproc) bcmath \
-    && docker-php-ext-install pdo \
-    && docker-php-ext-install pdo_mysql \
     && docker-php-ext-configure intl \
     && docker-php-ext-install intl \
     && docker-php-ext-install opcache \
