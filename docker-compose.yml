@@ -26,19 +26,38 @@ services:
                 aliases:
                     - web.local
 
-    database:
+    database-dev:
         image: postgres
         ports:
             - 5432:5432
         env_file:
             - ./docker/database/database.env # configure postgres
         volumes:
-            - database-data:/var/lib/postgresql/data/ # to store data in named volumes
+            - dev-database-data:/var/lib/postgresql/data/ # to store data in named volumes
         networks:
             - default
 
+    database-test:
+        image: postgres
+        ports:
+            - 5433:5433
+        command: -p 5433
+        env_file:
+            - ./docker/database/database.env # configure postgres
+        volumes:
+            - test-database-data:/var/lib/postgresql/data/ # to store data in named volumes
+        networks:
+            - default
+
+    mailcatcher:
+        image: schickling/mailcatcher:latest
+        ports:
+            - "1080:1080"
+            - "1025:1025"
+
 volumes:
-    database-data:
+    dev-database-data:
+    test-database-data:
     built-vendor:
         driver: local
         driver_opts:

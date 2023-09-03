@@ -10,6 +10,6 @@ volumes:
         driver: local
         driver_opts:
             type: none
-            # You have to specify your current vendor absolute path
+            # You have to specify your current vendor absolute path from your host machine
             device: '<path-to-your-local-vendor>'
             o: bind
